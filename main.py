@@ -1,10 +1,12 @@
 # main.py
 import pandas as pd
 import openpyxl  # Necesario para leer formatos de Excel más recientes
+import time
 import matplotlib.pyplot as plt
 from twilio.rest import Client
-from config import ACCOUNT_SID, AUTH_TOKEN, TWILIO_PHONE_NUMBER, DESTINATION_PHONE_NUMBER
+import pyimgur
 import logging
+from config import ACCOUNT_SID, AUTH_TOKEN, TWILIO_PHONE_NUMBER, DESTINATION_PHONE_NUMBER, IMGUR_CLIENT_ID
 
 # Configuración del logging
 logging.basicConfig(
@@ -14,6 +16,7 @@ logging.basicConfig(
     filemode='w'         # 'w' sobreescribe el archivo en cada ejecución, 'a' añade al final
 )
 
+# --- Funciones Auxiliares ---
 def leer_datos_excel(archivo):
     """Lee datos de un archivo de Excel y devuelve un DataFrame de Pandas."""
     try:
@@ -68,23 +71,6 @@ def generar_reporte(ventas_por_categoria, estadisticas_ventas):
         logging.exception(f"Error al generar el reporte: {e}")
         return "Error al generar el reporte."
 
-def enviar_reporte_whatsapp(reporte):
-    """Envía el reporte por WhatsApp usando la API de Twilio."""
-    try:
-        logging.info("Intentando enviar reporte por WhatsApp.")
-        client = Client(ACCOUNT_SID, AUTH_TOKEN)
-
-        message = client.messages.create(
-            body=reporte,
-            from_=f"whatsapp:{TWILIO_PHONE_NUMBER}", # Importante el prefijo 'whatsapp:'
-            to=f"whatsapp:{DESTINATION_PHONE_NUMBER}"  # Importante el prefijo 'whatsapp:'
-        )
-
-        logging.info(f"Reporte enviado a WhatsApp. SID: {message.sid}")
-
-    except Exception as e:
-        logging.exception(f"Error al enviar el reporte por WhatsApp: {e}")
-
 def generar_grafico(ventas_por_categoria, nombre_archivo="ventas_categoria.png"):
     """Genera un gráfico de barras de las ventas por categoría."""
     if ventas_por_categoria is None:
@@ -107,24 +93,44 @@ def generar_grafico(ventas_por_categoria, nombre_archivo="ventas_categoria.png")
         logging.exception(f"Error al generar el gráfico: {e}")
         return None
 
+def subir_imagen_a_imgur(ruta_imagen):
+    """Sube una imagen a Imgur y devuelve la URL."""
+    try:
+        logging.info(f"Subiendo imagen a Imgur: {ruta_imagen}")
+        IM = pyimgur.Imgur(IMGUR_CLIENT_ID)
+        uploaded_image = IM.upload_image(ruta_imagen, title="Reporte de Ventas")
+        logging.info(f"Imagen subida a Imgur. URL: {uploaded_image.link}")
+        return uploaded_image.link
+    except Exception as e:
+        logging.exception(f"Error al subir la imagen a Imgur: {e}")
+        return None
+
 def enviar_reporte_whatsapp_con_imagen(reporte, ruta_imagen):
     """Envía el reporte por WhatsApp con una imagen adjunta."""
     try:
         logging.info("Intentando enviar reporte con gráfico por WhatsApp.")
-        client = Client(ACCOUNT_SID, AUTH_TOKEN)
+        url_imagen = subir_imagen_a_imgur(ruta_imagen)  # Sube la imagen a Imgur
 
-        message = client.messages.create(
-            body=reporte,
-            media_url=[f"https://tu_servidor.com/{ruta_imagen}"],  # Requiere una URL accesible publicamente.
-            from_=f"whatsapp:{TWILIO_PHONE_NUMBER}",
-            to=f"whatsapp:{DESTINATION_PHONE_NUMBER}"
-        )
+        if url_imagen:
+            client = Client(ACCOUNT_SID, AUTH_TOKEN)
 
-        logging.info(f"Reporte y gráfico enviado a WhatsApp. SID: {message.sid}")
+            message = client.messages.create(
+                body=reporte,
+                media_url=[url_imagen],
+                from_=f"whatsapp:{TWILIO_PHONE_NUMBER}",
+                to=f"whatsapp:{DESTINATION_PHONE_NUMBER}"
+            )
+
+            logging.info(f"Reporte y gráfico enviado a WhatsApp. SID: {message.sid}")
+            time.sleep(1)
+
+        else:
+            logging.warning("No se pudo subir la imagen a Imgur, no se enviará el gráfico.")
+
     except Exception as e:
         logging.exception(f"Error al enviar el reporte y gráfico por WhatsApp: {e}")
 
-
+# --- Main ---
 if __name__ == "__main__":
     archivo_excel = "data/Ventas/Fundamentos.xlsx"
 
@@ -141,10 +147,9 @@ if __name__ == "__main__":
 
                 ruta_grafico = generar_grafico(ventas_por_categoria)
 
-                # Comentar o descomentar la función de envío de WhatsApp que quieras usar.
-                # Si descomentas la función con imagen, recuerda configurar correctamente la URL pública.
-                enviar_reporte_whatsapp(reporte) # Envia el reporte solo texto
-                #enviar_reporte_whatsapp_con_imagen(reporte, ruta_grafico)  # Requiere una URL pública.
+                # Elige el método de envío:
+                # enviar_reporte_whatsapp(reporte)  # Solo texto
+                enviar_reporte_whatsapp_con_imagen(reporte, ruta_grafico)  # Texto con imagen
 
             else:
                 logging.warning("No se pudo realizar el análisis o generar el reporte.")
