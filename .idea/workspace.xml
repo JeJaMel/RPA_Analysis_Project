@@ -4,11 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="526f832d-6902-48a3-81ab-2b8fe3911304" name="Changes" comment="feat: Add project files">
-      <change beforePath="$PROJECT_DIR$/.idea/PythonProject2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/PythonProject2.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="526f832d-6902-48a3-81ab-2b8fe3911304" name="Changes" comment="feat: Add .gitignore">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,6 +55,12 @@
     "last_opened_file_path": "C:/Users/jjmel/PycharmProjects/RNA_Analysis_Project"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\jjmel\PycharmProjects\RNA_Analysis_Project\data\Ventas" />
+      <recent name="C:\Users\jjmel\PycharmProjects\RNA_Analysis_Project\data" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -89,12 +93,30 @@
       <option name="project" value="LOCAL" />
       <updated>1741225070564</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="feat: Add masked twilio config">
+      <option name="closed" value="true" />
+      <created>1741227427670</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1741227427670</updated>
+    </task>
+    <task id="LOCAL-00004" summary="feat: Add .gitignore">
+      <option name="closed" value="true" />
+      <created>1741227463710</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1741227463710</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="feat: Initialize" />
     <MESSAGE value="feat: Add project files" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: Add project files" />
+    <MESSAGE value="feat: Add masked twilio config" />
+    <MESSAGE value="feat: Add .gitignore" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: Add .gitignore" />
   </component>
 </project>
