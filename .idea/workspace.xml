@@ -4,8 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="526f832d-6902-48a3-81ab-2b8fe3911304" name="Changes" comment="feat: Initialize">
+    <list default="true" id="526f832d-6902-48a3-81ab-2b8fe3911304" name="Changes" comment="feat: Add project files">
+      <change beforePath="$PROJECT_DIR$/.idea/PythonProject2.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/PythonProject2.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,11 +81,20 @@
       <option name="project" value="LOCAL" />
       <updated>1741223630835</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="feat: Add project files">
+      <option name="closed" value="true" />
+      <created>1741225070564</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1741225070564</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="feat: Initialize" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: Initialize" />
+    <MESSAGE value="feat: Add project files" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: Add project files" />
   </component>
 </project>
