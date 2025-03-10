@@ -1,6 +1,6 @@
 # main.py
 import pandas as pd
-import openpyxl  # Necesario para leer formatos de Excel más recientes
+import openpyxl
 import matplotlib.pyplot as plt
 from twilio.rest import Client
 import pyimgur
@@ -11,7 +11,7 @@ from config import ACCOUNT_SID, AUTH_TOKEN, TWILIO_PHONE_NUMBER, DESTINATION_PHO
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
-    filename='app.log',  # Guarda los logs en un archivo
+    filename='app.log',
     filemode='w'         # 'w' sobreescribe el archivo en cada ejecución, 'a' añade al final
 )
 
@@ -37,11 +37,9 @@ def realizar_analisis(df):
         return None
 
     try:
-        # Ejemplo de análisis: Calcular el total de ventas por categoría
         ventas_por_categoria = df.groupby('Categoria')['Ventas'].sum()
         logging.info(f"Total de Ventas por Categoría:\n{ventas_por_categoria}")
 
-        # Ejemplo de análisis: Calcular estadísticas descriptivas de las ventas
         estadisticas_ventas = df['Ventas'].describe()
         logging.info(f"Estadísticas Descriptivas de Ventas:\n{estadisticas_ventas}")
 
@@ -83,11 +81,11 @@ def generar_grafico(ventas_por_categoria, nombre_archivo="ventas_categoria.png")
         plt.xlabel('Categoría')
         plt.ylabel('Ventas')
         plt.xticks(rotation=45, ha='right') # Rota las etiquetas del eje x para mejor legibilidad
-        plt.tight_layout()  # Ajusta el diseño para que las etiquetas no se superpongan
-        plt.savefig(f"reports/{nombre_archivo}")  # Guarda el gráfico en la carpeta 'reports'
-        plt.close() # Cierra la figura para liberar memoria
+        plt.tight_layout()
+        plt.savefig(f"reports/{nombre_archivo}")
+        plt.close()
         logging.info(f"Gráfico guardado como 'reports/{nombre_archivo}'")
-        return f"reports/{nombre_archivo}"  # Retorna la ruta al archivo para poder adjuntarlo
+        return f"reports/{nombre_archivo}"
     except Exception as e:
         logging.exception(f"Error al generar el gráfico: {e}")
         return None
@@ -150,13 +148,11 @@ if __name__ == "__main__":
             if ventas_por_categoria is not None and estadisticas_ventas is not None:
                 reporte = generar_reporte(ventas_por_categoria, estadisticas_ventas)
                 print("\nReporte generado:\n", reporte)
-                logging.info(f"Reporte generado:\n{reporte}")  # Registra el reporte en el log
+                logging.info(f"Reporte generado:\n{reporte}")
 
                 ruta_grafico = generar_grafico(ventas_por_categoria)
 
-                # Elige el método de envío:
-                # enviar_reporte_whatsapp(reporte)  # Solo texto
-                enviar_reporte_whatsapp_con_imagen(reporte, ruta_grafico)  # Texto con imagen
+                enviar_reporte_whatsapp_con_imagen(reporte, ruta_grafico)
 
             else:
                 logging.warning("No se pudo realizar el análisis o generar el reporte.")
