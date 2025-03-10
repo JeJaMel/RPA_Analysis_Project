@@ -1,7 +1,6 @@
 # main.py
 import pandas as pd
 import openpyxl  # Necesario para leer formatos de Excel más recientes
-import time
 import matplotlib.pyplot as plt
 from twilio.rest import Client
 import pyimgur
@@ -106,29 +105,37 @@ def subir_imagen_a_imgur(ruta_imagen):
         return None
 
 def enviar_reporte_whatsapp_con_imagen(reporte, ruta_imagen):
-    """Envía el reporte por WhatsApp con una imagen adjunta."""
+    """Envía el reporte por WhatsApp con el reporte y el enlace de la imagen adjunta."""
     try:
         logging.info("Intentando enviar reporte con gráfico por WhatsApp.")
-        url_imagen = subir_imagen_a_imgur(ruta_imagen)  # Sube la imagen a Imgur
+        imgur_url = subir_imagen_a_imgur(ruta_imagen)  # Sube la imagen a Imgur
 
-        if url_imagen:
+        if imgur_url:
             client = Client(ACCOUNT_SID, AUTH_TOKEN)
+            message_body = f"{reporte}\n\nAquí está el enlace del grafico: {imgur_url}"
 
             message = client.messages.create(
-                body=reporte,
-                media_url=[url_imagen],
+                body=message_body,  # Usa el reporte y el enlace de Imgur en el body
                 from_=f"whatsapp:{TWILIO_PHONE_NUMBER}",
                 to=f"whatsapp:{DESTINATION_PHONE_NUMBER}"
             )
 
-            logging.info(f"Reporte y gráfico enviado a WhatsApp. SID: {message.sid}")
-            time.sleep(1)
+            logging.info(f"Reporte y enlace del gráfico enviado a WhatsApp. SID: {message.sid}")
+
 
         else:
-            logging.warning("No se pudo subir la imagen a Imgur, no se enviará el gráfico.")
+            logging.warning("No se pudo subir la imagen a Imgur, enviando solo el reporte de texto.")
+            client = Client(ACCOUNT_SID, AUTH_TOKEN)
+            message = client.messages.create(
+                body=reporte,
+                from_=f"whatsapp:{TWILIO_PHONE_NUMBER}",
+                to=f"whatsapp:{DESTINATION_PHONE_NUMBER}"
+            )
+            logging.info(f"Reporte de texto enviado debido a fallo en la subida de imagen. SID: {message.sid}")
+
 
     except Exception as e:
-        logging.exception(f"Error al enviar el reporte y gráfico por WhatsApp: {e}")
+        logging.exception(f"Error al enviar el reporte y el enlace del gráfico por WhatsApp: {e}")
 
 # --- Main ---
 if __name__ == "__main__":
